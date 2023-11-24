@@ -16,12 +16,6 @@
   let KEY = 3;
 
   function main() {
-    CTX = new AudioContext();
-    COMP_NODE = CTX.createDynamicsCompressor();
-    COMP_NODE.connect(CTX.destination);
-
-    ACTIVE_KEYS = new Map();
-
     document.addEventListener("keydown", handleKeydown);
     document.addEventListener("keyup", handleKeyup);
 
@@ -37,6 +31,14 @@
    * @param {KeyboardEvent} event
    */
   function handleKeydown(event) {
+    if (CTX === undefined) {
+      CTX = new AudioContext();
+      COMP_NODE = CTX.createDynamicsCompressor();
+      COMP_NODE.connect(CTX.destination);
+
+      ACTIVE_KEYS = new Map();
+    }
+
     let { code, altKey, ctrlKey, metaKey, shiftKey, isComposing } = event;
     let halfs = keycodeToHalfs(code);
     if (
