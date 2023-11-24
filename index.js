@@ -16,10 +16,16 @@
   let OCTAVE = 0;
   let SCALE = MINOR_SCALE;
   let KEY = 3;
+  let keycodeToHalfs = keycodeToHalfs_Keyboard;
+  let scalesButtons;
 
   function main() {
     document.addEventListener("keydown", handleKeydown);
     document.addEventListener("keyup", handleKeyup);
+
+    for (let btn of document.getElementsByClassName("btn-method")) {
+      btn.addEventListener("click", switchMethod);
+    }
 
     document
       .getElementById("input-octave")
@@ -28,7 +34,9 @@
     for (let btn of document.getElementsByClassName("btn-key")) {
       btn.addEventListener("click", switchKey);
     }
-    for (let btn of document.getElementsByClassName("btn-scale")) {
+
+    scalesButtons = document.getElementsByClassName("btn-scale");
+    for (let btn of scalesButtons) {
       btn.addEventListener("click", switchScale);
     }
   }
@@ -72,6 +80,32 @@
 
     osci.stop();
     ACTIVE_KEYS.delete(code);
+  }
+
+  /**
+   * @param {Event} event
+   */
+  function switchMethod({ target }) {
+    switch (target.value) {
+      case "Keyboard":
+        keycodeToHalfs = keycodeToHalfs_Keyboard;
+        for (let btn of scalesButtons) {
+          btn.disabled = false;
+        }
+        return;
+      case "Piano":
+        keycodeToHalfs = keycodeToHalfs_Piano;
+        for (let btn of scalesButtons) {
+          btn.disabled = true;
+        }
+        return;
+      default:
+        console.log(
+          `WARNING: Illegal value ${target.value}. Method defaulted to 'keycodeToHalfs_Keyboard'.`,
+        );
+        keycodeToHalfs = keycodeToHalfs_Keyboard;
+        return;
+    }
   }
 
   /**
@@ -151,7 +185,7 @@
   /**
    * @param {string} keycode
    */
-  function keycodeToHalfs(keycode) {
+  function keycodeToHalfs_Keyboard(keycode) {
     // prettier-ignore
     switch (keycode) {
     case "Digit1": return SCALE[0] + 12 * (OCTAVE + 1);
@@ -197,6 +231,54 @@
     case "Comma": return SCALE[7] + 12 * (OCTAVE + -2);
     case "Period": return SCALE[8] + 12 * (OCTAVE + -2);
     case "Slash": return SCALE[9] + 12 * (OCTAVE + -2);
+
+    default: return null;
+    }
+  }
+
+  /**
+   * @param {string} keycode
+   */
+  function keycodeToHalfs_Piano(keycode) {
+    // prettier-ignore
+    switch (keycode) {
+    case "Digit2": return 1    + 12 * (OCTAVE + 0);
+    case "Digit3": return 3    + 12 * (OCTAVE + 0);
+    case "Digit5": return 6    + 12 * (OCTAVE + 0);
+    case "Digit6": return 8    + 12 * (OCTAVE + 0);
+    case "Digit7": return 10   + 12 * (OCTAVE + 0);
+    case "Digit9": return 1+12 + 12 * (OCTAVE + 0);
+    case "Digit0": return 3+12 + 12 * (OCTAVE + 0);
+
+    case "KeyQ": return 0    + 12 * (OCTAVE + 0);
+    case "KeyW": return 2    + 12 * (OCTAVE + 0);
+    case "KeyE": return 4    + 12 * (OCTAVE + 0);
+    case "KeyR": return 5    + 12 * (OCTAVE + 0);
+    case "KeyT": return 7    + 12 * (OCTAVE + 0);
+    case "KeyY": return 9    + 12 * (OCTAVE + 0);
+    case "KeyU": return 11   + 12 * (OCTAVE + 0);
+    case "KeyI": return 0+12 + 12 * (OCTAVE + 0);
+    case "KeyO": return 2+12 + 12 * (OCTAVE + 0);
+    case "KeyP": return 4+12 + 12 * (OCTAVE + 0);
+
+    case "KeyS":      return 1    + 12 * (OCTAVE + -1);
+    case "KeyD":      return 3    + 12 * (OCTAVE + -1);
+    case "KeyG":      return 6    + 12 * (OCTAVE + -1);
+    case "KeyH":      return 8    + 12 * (OCTAVE + -1);
+    case "KeyJ":      return 10   + 12 * (OCTAVE + -1);
+    case "KeyL":      return 1+12 + 12 * (OCTAVE + -1);
+    case "Semicolon": return 3+12 + 12 * (OCTAVE + -1);
+
+    case "KeyZ":   return 0    + 12 * (OCTAVE + -1);
+    case "KeyX":   return 2    + 12 * (OCTAVE + -1);
+    case "KeyC":   return 4    + 12 * (OCTAVE + -1);
+    case "KeyV":   return 5    + 12 * (OCTAVE + -1);
+    case "KeyB":   return 7    + 12 * (OCTAVE + -1);
+    case "KeyN":   return 9    + 12 * (OCTAVE + -1);
+    case "KeyM":   return 11   + 12 * (OCTAVE + -1);
+    case "Comma":  return 0+12 + 12 * (OCTAVE + -1);
+    case "Period": return 2+12 + 12 * (OCTAVE + -1);
+    case "Slash":  return 4+12 + 12 * (OCTAVE + -1);
 
     default: return null;
     }
