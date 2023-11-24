@@ -12,12 +12,18 @@
   //                 1                     8
   let MAJOR_SCALE = [0, 2, 4, 5, 7, 9, 11, 12 + 0, 12 + 2, 12 + 4];
   let MINOR_SCALE = [0, 2, 3, 5, 7, 8, 10, 12 + 0, 12 + 2, 12 + 3];
+
+  let OCTAVE = 0;
   let SCALE = MINOR_SCALE;
   let KEY = 3;
 
   function main() {
     document.addEventListener("keydown", handleKeydown);
     document.addEventListener("keyup", handleKeyup);
+
+    document
+      .getElementById("input-octave")
+      .addEventListener("change", updateOctave);
 
     for (let btn of document.getElementsByClassName("btn-key")) {
       btn.addEventListener("click", switchKey);
@@ -66,6 +72,13 @@
 
     osci.stop();
     ACTIVE_KEYS.delete(code);
+  }
+
+  /**
+   * @param {Event} event
+   */
+  function updateOctave({ target }) {
+    OCTAVE = Number.parseInt(target.value);
   }
 
   /**
@@ -141,49 +154,49 @@
   function keycodeToHalfs(keycode) {
     // prettier-ignore
     switch (keycode) {
-    case "Digit1": return SCALE[0] + 12 * 1;
-    case "Digit2": return SCALE[1] + 12 * 1;
-    case "Digit3": return SCALE[2] + 12 * 1;
-    case "Digit4": return SCALE[3] + 12 * 1;
-    case "Digit5": return SCALE[4] + 12 * 1;
-    case "Digit6": return SCALE[5] + 12 * 1;
-    case "Digit7": return SCALE[6] + 12 * 1;
-    case "Digit8": return SCALE[7] + 12 * 1;
-    case "Digit9": return SCALE[8] + 12 * 1;
-    case "Digit0": return SCALE[9] + 12 * 1;
+    case "Digit1": return SCALE[0] + 12 * (OCTAVE + 1);
+    case "Digit2": return SCALE[1] + 12 * (OCTAVE + 1);
+    case "Digit3": return SCALE[2] + 12 * (OCTAVE + 1);
+    case "Digit4": return SCALE[3] + 12 * (OCTAVE + 1);
+    case "Digit5": return SCALE[4] + 12 * (OCTAVE + 1);
+    case "Digit6": return SCALE[5] + 12 * (OCTAVE + 1);
+    case "Digit7": return SCALE[6] + 12 * (OCTAVE + 1);
+    case "Digit8": return SCALE[7] + 12 * (OCTAVE + 1);
+    case "Digit9": return SCALE[8] + 12 * (OCTAVE + 1);
+    case "Digit0": return SCALE[9] + 12 * (OCTAVE + 1);
 
-    case "KeyQ": return SCALE[0] + 12 * 0;
-    case "KeyW": return SCALE[1] + 12 * 0;
-    case "KeyE": return SCALE[2] + 12 * 0;
-    case "KeyR": return SCALE[3] + 12 * 0;
-    case "KeyT": return SCALE[4] + 12 * 0;
-    case "KeyY": return SCALE[5] + 12 * 0;
-    case "KeyU": return SCALE[6] + 12 * 0;
-    case "KeyI": return SCALE[7] + 12 * 0;
-    case "KeyO": return SCALE[8] + 12 * 0;
-    case "KeyP": return SCALE[9] + 12 * 0;
+    case "KeyQ": return SCALE[0] + 12 * (OCTAVE + 0);
+    case "KeyW": return SCALE[1] + 12 * (OCTAVE + 0);
+    case "KeyE": return SCALE[2] + 12 * (OCTAVE + 0);
+    case "KeyR": return SCALE[3] + 12 * (OCTAVE + 0);
+    case "KeyT": return SCALE[4] + 12 * (OCTAVE + 0);
+    case "KeyY": return SCALE[5] + 12 * (OCTAVE + 0);
+    case "KeyU": return SCALE[6] + 12 * (OCTAVE + 0);
+    case "KeyI": return SCALE[7] + 12 * (OCTAVE + 0);
+    case "KeyO": return SCALE[8] + 12 * (OCTAVE + 0);
+    case "KeyP": return SCALE[9] + 12 * (OCTAVE + 0);
 
-    case "KeyA": return SCALE[0] + 12 * -1;
-    case "KeyS": return SCALE[1] + 12 * -1;
-    case "KeyD": return SCALE[2] + 12 * -1;
-    case "KeyF": return SCALE[3] + 12 * -1;
-    case "KeyG": return SCALE[4] + 12 * -1;
-    case "KeyH": return SCALE[5] + 12 * -1;
-    case "KeyJ": return SCALE[6] + 12 * -1;
-    case "KeyK": return SCALE[7] + 12 * -1;
-    case "KeyL": return SCALE[8] + 12 * -1;
-    case "Semicolon": return SCALE[9] + 12 * -1;
+    case "KeyA": return SCALE[0] + 12 * (OCTAVE + -1);
+    case "KeyS": return SCALE[1] + 12 * (OCTAVE + -1);
+    case "KeyD": return SCALE[2] + 12 * (OCTAVE + -1);
+    case "KeyF": return SCALE[3] + 12 * (OCTAVE + -1);
+    case "KeyG": return SCALE[4] + 12 * (OCTAVE + -1);
+    case "KeyH": return SCALE[5] + 12 * (OCTAVE + -1);
+    case "KeyJ": return SCALE[6] + 12 * (OCTAVE + -1);
+    case "KeyK": return SCALE[7] + 12 * (OCTAVE + -1);
+    case "KeyL": return SCALE[8] + 12 * (OCTAVE + -1);
+    case "Semicolon": return SCALE[9] + 12 * (OCTAVE + -1);
 
-    case "KeyZ": return SCALE[0] + 12 * -2;
-    case "KeyX": return SCALE[1] + 12 * -2;
-    case "KeyC": return SCALE[2] + 12 * -2;
-    case "KeyV": return SCALE[3] + 12 * -2;
-    case "KeyB": return SCALE[4] + 12 * -2;
-    case "KeyN": return SCALE[5] + 12 * -2;
-    case "KeyM": return SCALE[6] + 12 * -2;
-    case "Comma": return SCALE[7] + 12 * -2;
-    case "Period": return SCALE[8] + 12 * -2;
-    case "Slash": return SCALE[9] + 12 * -2;
+    case "KeyZ": return SCALE[0] + 12 * (OCTAVE + -2);
+    case "KeyX": return SCALE[1] + 12 * (OCTAVE + -2);
+    case "KeyC": return SCALE[2] + 12 * (OCTAVE + -2);
+    case "KeyV": return SCALE[3] + 12 * (OCTAVE + -2);
+    case "KeyB": return SCALE[4] + 12 * (OCTAVE + -2);
+    case "KeyN": return SCALE[5] + 12 * (OCTAVE + -2);
+    case "KeyM": return SCALE[6] + 12 * (OCTAVE + -2);
+    case "Comma": return SCALE[7] + 12 * (OCTAVE + -2);
+    case "Period": return SCALE[8] + 12 * (OCTAVE + -2);
+    case "Slash": return SCALE[9] + 12 * (OCTAVE + -2);
 
     default: return null;
     }
