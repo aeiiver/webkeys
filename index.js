@@ -14,16 +14,27 @@
   let MINOR_SCALE = [0, 2, 3, 5, 7, 8, 10, 12 + 0, 12 + 2, 12 + 3];
 
   let OCTAVE = 0;
-  let SCALE = MINOR_SCALE;
+  let SCALE = MAJOR_SCALE;
   let KEY = 3;
   let keycodeToHalfs = keycodeToHalfs_Keyboard;
   let scalesButtons;
+
+  /** @type HTMLInputElement */
+  let activeMethodButton = null;
+  /** @type HTMLInputElement */
+  let activeKeyButton = null;
+  /** @type HTMLInputElement */
+  let activeScaleButton = null;
 
   function main() {
     document.addEventListener("keydown", handleKeydown);
     document.addEventListener("keyup", handleKeyup);
 
     for (let btn of document.getElementsByClassName("btn-method")) {
+      if (btn.value === "Keyboard") {
+        activeMethodButton = btn;
+        btn.classList.add("btn-active")
+      }
       btn.addEventListener("click", switchMethod);
     }
 
@@ -32,11 +43,19 @@
       .addEventListener("change", updateOctave);
 
     for (let btn of document.getElementsByClassName("btn-key")) {
+      if (btn.value === "C") {
+        activeKeyButton = btn;
+        btn.classList.add("btn-active")
+      }
       btn.addEventListener("click", switchKey);
     }
 
     scalesButtons = document.getElementsByClassName("btn-scale");
     for (let btn of scalesButtons) {
+      if (btn.value === "Major") {
+        activeScaleButton = btn;
+        btn.classList.add("btn-active")
+      }
       btn.addEventListener("click", switchScale);
     }
   }
@@ -86,6 +105,11 @@
    * @param {Event} event
    */
   function switchMethod({ target }) {
+    if (activeMethodButton !== null)
+      activeMethodButton.classList.remove("btn-active");
+    activeMethodButton = target;
+    activeMethodButton.classList.add("btn-active");
+
     switch (target.value) {
       case "Keyboard":
         keycodeToHalfs = keycodeToHalfs_Keyboard;
@@ -119,6 +143,11 @@
    * @param {Event} event
    */
   function switchKey({ target }) {
+    if (activeKeyButton !== null)
+      activeKeyButton.classList.remove("btn-active");
+    activeKeyButton = target;
+    activeKeyButton.classList.add("btn-active");
+
     KEY = keyToHalfs(target.value) ?? keyToHalfs("C");
   }
 
@@ -126,6 +155,11 @@
    * @param {Event} event
    */
   function switchScale({ target }) {
+    if (activeScaleButton !== null)
+      activeScaleButton.classList.remove("btn-active");
+    activeScaleButton = target;
+    activeScaleButton.classList.add("btn-active");
+
     switch (target.value) {
       case "Major":
         SCALE = MAJOR_SCALE;
